@@ -1,0 +1,94 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+
+
+*{
+	padding:0px;
+	margin:0px;
+}
+
+
+
+a{
+
+	text-decoration:none;
+	color:#006db7;
+}
+
+a:hover{
+	color:#aaa;
+}
+
+
+
+img{
+	border:none;
+}
+
+
+
+h4{
+    font-size:18px;
+    color:#006db7;
+}
+
+
+
+body{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#00365a;
+	margin:0px;
+	padding:0px;
+}
+
+.vote-share{
+	background: #FEFEF2;
+	border: 2px solid #FAF2A1;
+    color: #333;
+	padding: 4px;
+	margin-bottom: 10px;
+}
+
+.the-vote, .image-gallery.the-vote .vote-share{
+	text-align:center;
+}
+
+.vote-share button{
+	padding-left:25px;
+	font-weight: bold;
+	border:none;
+	color: #333;
+	cursor:pointer;
+}
+
+.vote-share p{
+	line-height: 20px;
+	margin-top:10px;
+}
+
+.vote-share p input[type="checkbox"]{
+	line-height: 20px;
+	height: 20px;
+	vertical-align: middle;
+}
+
+.vote-share button:hover{
+	color:#0098FF;
+}
+
+.vote-share button.vote{
+	background:url(../img/vote-share-btn.png) top left no-repeat;
+}
+
+.vote-share button.share{
+	margin-right:36px;
+	background:url(../img/vote-share-btn.png) 0px -14px no-repeat;
+}
+/*
+.vote-share button{
+	background:url(../img/vote-share-btn.png) top left no-repeat;
+	border:none;
+}*/

@@ -1,0 +1,1 @@
+<img src="<?php echo Router::url('/img/home.jpg');?>" />

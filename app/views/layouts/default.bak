@@ -1,0 +1,219 @@
+<?php
+/**
+ *
+ * PHP versions 4 and 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.libs.view.templates.layouts
+ * @since         CakePHP(tm) v 0.10.0.1076
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+	<?php echo $this->Html->charset(); ?>
+	<title>
+		<?php __('ZTE Malaysia'); ?>
+		<?php echo $title_for_layout; ?>
+	</title>
+	<?php
+		echo $this->Html->meta('icon');
+        ### css
+		echo $this->Html->css('cake.generic');
+        echo $this->Html->css('lightview');
+        echo $this->Html->css('style');
+        ### js
+        echo $this->Html->script('prototype');
+        echo $this->Html->script('scriptaculous'); 
+        echo $this->Html->script('lightview'); 
+        ### facebook Integration JS Library init
+        echo $this->Html->script('http://connect.facebook.net/en_US/all.js');
+        $fb_script = <<<EOT
+        window.fbAsyncInit = function() {
+            FB.init({
+              appId   : '$fb_appid',
+              status  : true, // check login status
+              cookie  : true, // enable cookies to allow the server to access the session
+              xfbml   : true // parse XFBML
+            });
+            
+            //FB.Canvas.setAutoResize();
+            FB.Canvas.setSize({ height: 600 });
+        };
+EOT;
+        //echo $this->Html->scriptBlock("window.fbAsyncInit = function(){ FB.Canvas.setAutoResize(); }");
+        echo $this->Html->scriptBlock($fb_script);
+		echo $scripts_for_layout;
+	?>
+
+<!-- the script -->    
+<?php
+    echo $this->Html->scriptStart();
+    $js_func = <<<EOT
+    function signUpAjax(event){
+        Event.stop(event);
+        Lightview.show({
+            href: this.href,
+            rel: 'ajax',
+            options: {
+                topclose: true,
+                ajax: {
+                    evalScripts: true
+                }
+            }
+        });
+    }
+    
+    function inviteAjax(event){
+        Event.stop(event);
+        Lightview.show({
+            href: this.href,
+            rel: 'ajax',
+            title: 'Invite Your Friend',
+            options: {
+                topclose: false,
+                closeButton: 'small',
+                height: 510
+            }
+        });
+    }
+    /*
+    function formAjax(event){
+        Event.stop(event);
+        Lightview.show({
+            href: this.action,
+            rel: 'ajax',
+            options: {
+              title: 'results',
+              ajax: {
+                evalScripts: true,
+                parameters: Form.serialize('UserRegisterForm') // the parameters from the form
+              }
+            }
+        });
+    }
+    */
+EOT;
+    echo $this->Html->scriptBlock($js_func);
+    /*$lightview = <<<EOT
+    Event.stop(event);
+    Lightview.show({
+        href: this.href,
+        rel: 'ajax',
+        options: {
+            topclose: true,
+            ajax: {
+                onComplete: function(){
+                // once the request is complete we observe the form for a submit
+                //$$('.signup-form').observe('submit', submitAjaxFormDemonstration);
+                    $oncomplete
+                }
+            }
+        }
+    });
+EOT;*/
+    //echo $this->Js->get('#signup-link')->event('click', 'signUpAjax', array('wrap'=>false));
+    echo $this->Js->domReady($this->Js->get('.signup-link')->each('item.observe( \'click\', signUpAjax)'));
+    //echo $this->Js->get('#invite-link')->event('click', 'inviteAjax', array('wrap'=>false));
+    echo $this->Html->scriptEnd();
+?>
+<!-- the script -->
+
+</head>
+<body>
+    <!-- Necessary for Facebook Integration -->
+    <div id="fb-root"></div>
+    <!-- End -->
+    
+    <div class="the-header">
+    
+    <div class="the-navigation">
+    	<a href="<?php echo Router::url('/');?>" class="nav-std home here"><span class="hidden-text">Home</span></a>
+        <!--<a href="#" class="nav-std how"><span class="hidden-text">How to win</span></a>-->
+        <?php echo $this->Html->link("<span class=\"hidden-text\">How to win</span>", array('controller' => 'pages', 'action' => 'how'),
+            array('class'=>'nav-std how signup-link', "escape"=>false)); ?> <!-- how to win -->
+<!--        <?php echo $this->Html->link("<span class=\"hidden-text\">Join contest</span>", array('controller' => 'users', 'action' => 'register'), 
+            array('id'=>'signup-link','class'=>'nav-std join', "escape"=>false)); ?>--> <!-- join contest.register -->
+        <?php echo $this->Html->link("<span class=\"hidden-text\">Join contest</span>", array('controller' => 'users', 'action' => 'register'), 
+            array('class'=>'nav-std join signup-link', "escape"=>false)); ?> <!-- join contest.register -->
+        <?php echo $this->Html->link("<span class=\"hidden-text\">Invite friends</span>", array('controller' => 'entries', 'action' => 'inviteFriends'), 
+            array('class'=>'nav-std invite lightview', 'title' => 'Invite Your Friend :: :: height: 510, closeButton: \'small\', topclose: false', "escape"=>false)); ?> <!-- invite friends -->
+        <?php echo $this->Html->link("<span class=\"hidden-text\">Vote now</span>", array('controller' => 'entries', 'action' => 'gallery'),
+            array('class'=>'nav-std vote', "escape"=>false)); ?> <!-- view gallery -->
+        <div class="the-goal"><span>Goal</span></div>
+    </div> <!-- the-navigation -->
+    
+   	<div class="the-logo">
+    	<img src="<?php echo Router::url('/img/the-logo.png');?>" />
+    </div> <!-- the-logo -->
+
+</div> <!-- the-header -->
+    
+	<div class="the-body">
+<!--		<div id="header">
+			<h1><?php echo $this->Html->link(__('CakePHP: the rapid development php framework', true), 'http://cakephp.org'); ?></h1>
+		</div>-->
+		<div class="the-content">
+
+			<?php echo $this->Session->flash(); ?>
+            <?php echo $this->Session->flash('auth'); ?>
+			<?php echo $content_for_layout; ?>
+
+		</div>
+        
+        
+        <div class="the-footer">
+    
+    	<div class="dots no01"></div>
+        <div class="dots no02"></div>
+        <div class="dots no03"></div>
+        
+    	<div class="foot-menu">
+            
+<!--            <?php echo $this->Html->link("<div class=\"my-head\" style=\"width:70px;\">Join Contest<div class=\"my-tail\"></div></div>", array('controller' => 'users', 'action' => 'register'), 
+            array('id'=>'signup-link','class'=>'footer-std join', "escape"=>false)); ?>--> <!-- join contest.register -->
+            
+            <?php echo $this->Html->link("<div class=\"my-head\" style=\"width:70px;\">Join Contest<div class=\"my-tail\"></div></div>", array('controller' => 'users', 'action' => 'register'), 
+            array('class'=>'footer-std join signup-link', "escape"=>false)); ?> <!-- join contest.register -->
+            
+            <?php echo $this->Html->link("<div class=\"my-head\" style=\"width:50px;\">Vote Now<div class=\"my-tail\"></div></div>", array('controller' => 'entries', 'action' => 'gallery'),
+            array('class'=>'footer-std vote', "escape"=>false)); ?> <!-- view gallery -->
+            
+            <?php echo $this->Html->link("<div class=\"my-head\" style=\"width:90px;\">Terms &amp; Condition<div class=\"my-tail\"></div></div>", array('controller' => 'pages', 'action' => 'terms'),
+            array('class'=>'footer-std term', "escape"=>false)); ?> <!-- terms and condition -->
+            
+	        <a href="http://www.facebook.com/ZTEMalaysia" class="footer-std return" target="_parent">
+            	<div class="my-head" style="width:100px;">Return to Fan Page<div class="my-tail"></div></div>                
+			</a>
+		</div> <!-- foot-menu -->
+        
+        <div class="dots no04"></div>
+        
+    </div> <!-- the-footer -->
+    
+    <div style="clear:both; padding-top:10px;"></div>
+    
+    </div> <!-- the-body -->
+    
+<!--		<div id="footer">
+			<?php echo $this->Html->link(
+					$this->Html->image('cake.power.gif', array('alt'=> __('CakePHP: the rapid development php framework', true), 'border' => '0')),
+					'http://www.cakephp.org/',
+					array('target' => '_blank', 'escape' => false)
+				);
+			?>
+		</div>-->
+	
+	<?php echo $this->element('sql_dump'); // Visible to administrator only ?>
+    <?php echo $this->Js->writeBuffer(); // Necessary for Javascript, invisible to user?>
+</body>
+</html>
